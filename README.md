@@ -1,3 +1,5 @@
+Using NinjaMuffin's game to test a camera system. Needs smoothing but works alright
+
 # LD44
 Your Life Is Currency
 

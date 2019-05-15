@@ -81,12 +81,13 @@ class PlayState extends FlxState
 		_camTrack = new FlxObject(0, 0, 1, 1);
 		add(_camTrack);
 		
-		FlxG.camera.focusOn(_player.getPosition());
-		
-		FlxG.camera.follow(_camTrack, FlxCameraFollowStyle.LOCKON, 0.1);
-		FlxG.camera.followLead.set(10, 5);
-		FlxG.camera.setScrollBounds(0, WORLDSIZE.width, 500, WORLDSIZE.height);
-		FlxG.worldBounds.set(0, 0, WORLDSIZE.width, WORLDSIZE.height);
+		var cam = Camera.replace(FlxG.camera);
+		cam.follow(_player);
+		cam.leading.x = FlxG.width  / 8;
+		cam.leading.y = FlxG.height / 8;
+		cam.maxShiftTime.x = 1;
+		cam.maxShiftTime.y = 1;
+		cam.setScrollBoundsRect(0, WORLDSIZE.width, 500, WORLDSIZE.height, true);
 		
 		walls = new FlxGroup();
 		add(walls);
@@ -337,7 +338,7 @@ class PlayState extends FlxState
 	
 	override public function update(elapsed:Float):Void
 	{
-		cameraHandle();
+		// cameraHandle();
 		
 		if (!pixieSpawned)
 		{
@@ -393,6 +394,8 @@ class PlayState extends FlxState
 		}
 		
 		super.update(elapsed);
+		
+		(cast FlxG.camera:Camera).updateFollowSpecial(elapsed);
 		
 		grpEnemies.forEachAlive(function(e:Enemy)
 		{
